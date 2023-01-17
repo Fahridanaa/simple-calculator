@@ -30,6 +30,7 @@ const hitung = (operator, ...num) => {
 let operator = '';
 let num = [];
 let done = false;
+let isDec = false;
 const score = document.querySelector('.score > .operate');
 const history = document.querySelector('.score > .history');
 const key = document.querySelectorAll('.key');
@@ -38,6 +39,7 @@ const clear = document.querySelector('.clear');
 const percent = document.querySelector('.percent');
 const equal = document.querySelector('.equal');
 const erase = document.querySelector('.erase');
+const decimal = document.querySelector('.decimal');
 
 key.forEach(item => {
     item.addEventListener('click', () => {
@@ -47,12 +49,13 @@ key.forEach(item => {
             score.textContent = (item.getAttribute('data-key'));
             done = false; 
         }
-        
+
         if(operator == ''){
-            num[0] = Number.parseInt(score.textContent);
+            num[0] = Number.parseFloat(score.textContent);
         }else {
-            num[1] = Number.parseInt(score.textContent);
+            num[1] = Number.parseFloat(score.textContent);
         }
+        
         
     });
 });
@@ -83,7 +86,7 @@ erase.addEventListener('click', () => {
         let temp2 = num[1].toString().split('')
         if(temp2[1]){
             temp2 = temp2.splice(0, temp2.length - 1).join('');
-            num[1] = Number.parseInt(temp2);
+            num[1] = Number(temp2);
             score.textContent = num[1]
         }else if(temp2[0] == "0"){
             operator = '';
@@ -98,7 +101,7 @@ erase.addEventListener('click', () => {
         let temp1 = num[0].toString().split('')
         if(temp1[1]){
             temp1 = temp1.splice(0, temp1.length - 1).join('');
-            num[0] = Number.parseInt(temp1);
+            num[0] = Number(temp1);
         }else {
             num[0] = 0;
         }
@@ -127,4 +130,27 @@ percent.addEventListener('click', () => {
         num[1] /= 100;
         score.textContent = num[1];
     }
+})
+
+decimal.addEventListener('click', () => {
+    if(history.textContent != ''){
+        let temp = num[1].toString();
+        if(temp.includes('.')){
+            temp = temp.split('').filter((number) => number != '.').join('');
+            num[1] = Number(temp);  
+            score.textContent = num[1] + '.';
+        }else {
+            score.textContent = num[1] + '.';
+        }
+    }else {
+        let temp = num[0].toString();
+        if(temp.includes('.')){
+            temp = temp.split('').filter((number) => number != '.').join('');
+            num[0] = Number(temp);  
+            score.textContent = num[0] + '.';
+        }else {
+            score.textContent = num[0] + '.';
+        }
+    }
+    
 })
